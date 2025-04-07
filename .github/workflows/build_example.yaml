@@ -1,0 +1,32 @@
+name: Build example.pdf
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Typst
+        uses: typst-community/setup-typst@v2
+        with:
+          version: "latest"
+
+      - name: Build example.pdf
+        run: |
+          typst c example.typ example.pdf
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add . -f
+          git commit -m "Build example.pdf" || echo "No changes to commit"
+          git push
