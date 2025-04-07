@@ -197,7 +197,8 @@
                   page.margin.outside
                 } else {
                   page.margin.left
-                },
+                }
+                  - 6pt,
               ),
               align: (right + bottom, center, left + bottom),
               ..(
@@ -279,13 +280,13 @@
             -page.margin.outside
           }
         } else {
-          page.margin.right
+          -page.margin.left
         },
         {
-          let rev-or-not = if calc.odd(here().page()) {
-            x => x
-          } else {
+          let rev-or-not = if book and calc.even(here().page()) {
             x => x.rev()
+          } else {
+            x => x
           }
           block(
             width: page.width,
