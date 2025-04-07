@@ -7,7 +7,7 @@ on:
       - main
 
 jobs:
-  update-readme:
+  update-example:
     runs-on: ubuntu-latest
 
     steps:
@@ -28,5 +28,5 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add . -f
-          git commit -m "Build example.pdf" || echo "No changes to commit"
+          git commit -m "Update example.pdf" || echo "No changes to commit"
           git push
