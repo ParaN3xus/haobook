@@ -28,7 +28,7 @@
 
   This is a preface. You can add some information about the book here by calling `preface`.
 
-  The template is heavily inspired by the LaTeX book template #link("https://github.com/fmarotta/kaobook")[kaobook], and was sponsored by l-#sym.zwj;yexiang1992. Without the developers of kaobook and the support of l-yexiang1992, this template would not have been possible.
+  The template is heavily inspired by the LaTeX book template #link("https://github.com/fmarotta/kaobook")[kaobook], and was sponsored by #l-yexiang1992. Without the developers of kaobook and the support of #l-yexiang1992, this template would not have been possible.
 
   During the development of this template, I have also referenced the implementations of #link("https://github.com/samuelireson/project-iii-typst")[project-iii-typst] and #link("https://github.com/nogula/tufte-memo")[tufte-memo]. They are all excellent templates that you might want to explore if interested. The key feature of this template—sidenotes—is implemented using #l-marginalia by #link("https://github.com/nleanba")[\@nleanba]. I must emphasize that #l-marginalia's implementation is truly outstanding. If you simply want to add sidenotes to your document, I recommend using #l-marginalia directly, as it offers more power and customization options than this template.
 
