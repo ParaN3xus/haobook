@@ -292,8 +292,8 @@ The template is based on the `marginalia` package, so it should be compatible wi
 
 Regarding `marge`, `drafting`, or other margin-related packages, I'm not certain about their compatibility. However, it's generally not recommended to use them together with the `marginalia` package.
 
-== `i-figured`
-Don't use `i-figured` with this template. It will cause conflicts with the numbering styles.
+== i-figured
+Don't use i-figured with this template. It will cause conflicts with the numbering styles.
 
 If you want to customize the numbering styles, you can examine `chapter-fig-eq-no` and its usage inside `body-styles` in `haobook/styles.typ`.
 
