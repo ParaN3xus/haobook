@@ -1,6 +1,6 @@
 # HaoBook
 
-A beautiful Typst book template inspired by [KaoBook](https://github.com/fmarotta/kaobook), featuring margin notes, side figures, and elegant typography.
+A beautiful Typst book template inspired by [kaobook](https://github.com/fmarotta/kaobook), featuring margin notes, side figures, and elegant typography.
 
 ## Example and Usage
 
