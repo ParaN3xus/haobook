@@ -1,6 +1,6 @@
 #import "pages.typ": cover, epigraph, preface, contents, bib, normal-page
 #import "styles.typ": body-styles, front-matter-style, appendix-style
-#import "tools.typ": section, side-note, margin-note, side-figure, wideblock, img-heading
+#import "tools.typ": part, side-note, margin-note, side-figure, wideblock, img-heading
 
 #let template(book: false) = {
   (

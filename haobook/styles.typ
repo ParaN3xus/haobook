@@ -69,19 +69,13 @@
 }
 
 #let contents-style(body) = {
-  // cancle link style
+  // cancel link style
   show link: set text(black)
   show underline: it => it.body
 
   let indent = 0.7cm
   set outline(
-    indent: x => {
-      if x == 0 {
-        return 0em
-      } else {
-        return indent * (x)
-      }
-    },
+    indent: indent,
     title: {
       heading(
         outlined: true,
@@ -96,22 +90,20 @@
   set outline.entry(fill: repeat(".", gap: 0.2cm))
   show outline.entry: x => {
     if x.element.func() == figure {
+      // parts
       link(
         x.element.location(),
         {
           set text(1.3em)
           v(0.4cm)
-          smallcaps(
-            strong({
-              x.body()
-            }),
-          )
+          smallcaps(strong(x.body()))
           h(1fr)
           strong(x.page())
           v(0cm)
         },
       )
     } else if x.level == 1 {
+      // level 1 headings
       link(
         x.element.location(),
         {
@@ -132,6 +124,106 @@
     }
   }
   body
+}
+
+#let figure-styles(x) = {
+  // figure caption by side
+  // skip side figure
+  if x.body.func() == func-seq and x.body.children.len() > 0 and x.body.children.first() == no-side-caption-tag {
+    return x
+  }
+
+  if x.caption != none {
+    context {
+      show figure.caption: none
+      x
+      margin-note(
+        bold-figure-caption(x.caption, x.location()),
+        dy: -measure(x.body).height - 0.65em,
+      )
+      v(-par.spacing)
+    }
+  } else {
+    x
+  }
+}
+
+#let ref-styles(x) = {
+  // ref bib styles
+  // if is bib
+  if x.element == none {
+    x
+    margin-note(
+      cite(
+        x.target,
+        form: "full",
+      ),
+    )
+  } else {
+    x
+  }
+}
+
+#let heading-styles(book: false, x) = {
+  if x.body.func() == func-seq and x.body.children.at(0) == no-style-heading {
+    // prevent conflicting with img heading
+    return x
+  }
+  if x.level == 1 {
+    if type(page.margin) != dictionary {
+      return x
+    }
+    {
+      set page(header: none)
+      if book {
+        pagebreak(to: "odd")
+      }
+    }
+    place(
+      top,
+      dy: -page.margin.top,
+      dx: -book-func(book, _ => page.margin.left, _ => page.margin.inside, _ => 0),
+      {
+        let bottom-pad = 6pt
+        block(
+          width: page.width,
+          align(
+            right,
+            grid(
+              columns: (
+                auto,
+                10pt,
+                0pt,
+                8pt,
+                book-func(book, _ => page.margin.right, _ => page.margin.outside, _ => 0) - 17pt,
+              ),
+              align: (right + bottom, center, center, center, left + bottom),
+              pad(
+                text(26pt, x.body),
+                bottom: bottom-pad,
+              ),
+              [],
+              line(angle: 90deg, length: 4cm),
+              [],
+              pad(
+                text(74pt, counter(heading).display(heading.numbering)),
+                bottom: bottom-pad,
+              ),
+            ),
+          ),
+        )
+      },
+    )
+    v(3.5cm)
+    context chapter-outline()
+  } else if x.level == 2 {
+    v(1cm, weak: true)
+    set text(14pt)
+    x
+    v(0.7cm, weak: true)
+  } else {
+    x
+  }
 }
 
 #let body-styles(book: false, body) = {
@@ -157,211 +249,14 @@
   set text(body-font-size)
 
   // heading style
-  show heading: x => {
-    if x.body.func() == func-seq and x.body.children.at(0) == no-style-heading {
-      return x
-    }
-    if x.level == 1 {
-      if type(page.margin) != dictionary {
-        return x
-      }
-      {
-        set page(header: none)
-        if book {
-          pagebreak(to: "odd")
-        }
-      }
-      place(
-        top,
-        dy: -page.margin.top,
-        dx: (
-          if book {
-            if calc.odd(x.location().page()) {
-              -page.margin.inside
-            } else {
-              -page.margin.outside
-            }
-          } else {
-            -page.margin.right
-          }
-        ),
-        {
-          let bottom-pad = 6pt
-          block(
-            width: page.width,
-            grid(
-              columns: (
-                1fr,
-                0pt,
-                if book {
-                  page.margin.outside
-                } else {
-                  page.margin.left
-                }
-                  - 6pt,
-              ),
-              align: (right + bottom, center, left + bottom),
-              ..(
-                pad(
-                  text(26pt, x.body) + h(10pt),
-                  bottom: bottom-pad,
-                ),
-                line(angle: 90deg, length: 4cm),
-                pad(
-                  h(8pt) + text(74pt, counter(heading).display(heading.numbering)),
-                  bottom: bottom-pad,
-                ),
-              ),
-            ),
-          )
-        },
-      )
-      v(3.5cm)
-      // chapter outline
-      place({
-        v(0.3cm)
-        note(
-          numbered: false,
-          {
-            set outline.entry(fill: repeat(".", gap: 0.1cm))
-            show outline.entry: x => {
-              set text(body-font-size)
-              strong(x)
-              h(0em)
-            }
-            outline(
-              title: none,
-              indent: 0em,
-              target: {
-                let s = selector(heading.where(level: 2)).after(here())
-
-                let next-heading = query(heading.where(level: 1).after(here()))
-                if next-heading.len() > 1 {
-                  s = s.before(next-heading.at(1).location())
-                }
-                s
-              },
-            )
-          },
-        )
-      })
-    } else if x.level == 2 {
-      v(0.4cm)
-      set text(14pt)
-      x
-      v(0.3cm)
-    } else {
-      x
-    }
-  }
+  show heading: heading-styles.with(book: book)
 
   // page header
-  set page(
-    header: context {
-      let headings = query(selector(heading.where(level: 1)).after(here()))
-      if headings.len() != 0 and headings.first().location().page() == here().page() {
-        return
-      }
-      headings = query(selector(heading.where(level: 1)).before(here()))
-      if headings.len() == 0 {
-        return
-      }
-      let fst-h = headings.last()
-      let pad-b = 3pt
+  set page(header: page-header(book))
 
-      if type(page.margin) != dictionary {
-        return
-      }
-      move(
-        dx: if book {
-          if calc.odd(here().page()) {
-            -page.margin.inside
-          } else {
-            -page.margin.outside
-          }
-        } else {
-          -page.margin.left
-        },
-        {
-          let rev-or-not = if book and calc.even(here().page()) {
-            x => x.rev()
-          } else {
-            x => x
-          }
-          block(
-            width: page.width,
-            grid(
-              columns: rev-or-not((1fr, 0.3cm, 0pt, 0.3cm, 3cm)),
-              align: (right, right, center, right, left),
-              ..rev-or-not((
-                pad(
-                  {
-                    rev-or-not((
-                      (
-                        text(
-                          style: "italic",
-                          fst-h.body,
-                        )
-                      ),
-                      h(0.3em),
-                      numbering("1", ..counter(heading).at(fst-h.location())),
-                    )).join()
-                  },
-                  bottom: pad-b,
-                ),
-                [],
-                line(
-                  angle: 90deg,
-                  stroke: 0.5pt,
-                  length: page.margin.top,
-                ),
-                [],
-                pad(str(here().page()), bottom: pad-b),
-              ))
-            ),
-          )
-        },
-      )
-    },
-  )
+  show figure: figure-styles
 
-  // figure caption by side
-  show figure: x => {
-    // skip side figure
-    if x.body.func() == func-seq and x.body.children.len() > 0 and x.body.children.first() == no-side-caption-tag {
-      return x
-    }
-
-    {
-      show figure.caption: none
-      x
-      v(-1em)
-    }
-    if x.caption != none {
-      context {
-        margin-note(
-          bold-figure-caption(x.caption, x.location()),
-          dy: -measure(x.body).height,
-        )
-      }
-    }
-  }
-
-  // ref bib style
-  show ref: x => {
-    // if is bib
-    if x.element == none {
-      x
-      margin-note(
-        cite(
-          x.target,
-          form: "full",
-        ),
-      )
-    } else {
-      x
-    }
-  }
+  show ref: ref-styles
 
   show: chapter-fig-eq-no
   body

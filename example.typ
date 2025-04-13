@@ -40,7 +40,7 @@
 
 #show: body-styles
 
-#section[Specifications]
+#part[Specifications]
 = Features
 In this chapter, I will show you all the features of the template.
 
@@ -78,8 +78,6 @@ You can use `side-note` and `margin-note`#margin-note[A margin note.] to add not
 You can use `side-figure` to add a figure like @fig-circle to the document.
 
 You might wonder why you can't simply use `figure` inside `margin-note`. This would cause conflicts with the figure caption styles shown in @sect-feat-figures, so you need to use `side-figure` instead.
-
-
 #side-figure(
   figure(
     circle(),
@@ -121,7 +119,7 @@ You may have also noticed that figure numbering#side-note[Actually the counters 
 )
 The template is designed to be easy to use. You can use it to create a book or a report with a beautiful layout.
 
-In this section, I will show you how to initialize the template and use a variety of utility functions provided.
+In this chapter, I will show you how to initialize the template and use a variety of utility functions provided.
 
 == Importing the Template
 To use the template, you need to import the `lib.typ` file and call the `template` function.
@@ -146,7 +144,7 @@ In addition to the four functions returned by `template`, functions independent 
   - `preface(body)`: Add a preface to the document.
   - `contents`: Add a table of contents to the document.
   - `bib(body)`: Add a bibliography to the document.
-  - `section(body)`: Add a section page to the document.
+  - `part(body)`: Add a part page to the document.
   - `normal-page(body)`: Add normal pages without side notes to the document.
 - Tools:
   - `side-note(body, dy: 0em)`: Add a side note#side-note[`side-note` has numbering.] to the document.
@@ -182,22 +180,22 @@ Overall, your document should be structured like this:
 ...
 
 // appendix
-#section[Appendix]
+#part[Appendix]
 #show: appendix-style
 
 ...
 ```
 
 For the body of the document, the template provides you with at least three hierarchical levels of structure:
-- `section`#side-note[A section is optional. You can create a level 1 heading without any section just like @chapter-usage.]: The `section` will create a single page with a title. You can use it to create a new chapter or a new section in your document.
+- `part`#side-note[A part is optional. You can create a level 1 heading without any part just like @chapter-usage.]: The `part` will create a single page with a title. You can use it to create a new chapter or a new part in your document.
 - `= Heading` or `img-heading`: The level 1 heading will create a chapter starting from a new page#side-note[With a chapter outline just like the one at the beginning of this chapter]. Specifically, the `img-heading` will create a heading with an image banner.
-- `== Subheading`: The level 2 heading will create a subheading.
+- `== Section`: The level 2 heading will create a section.
 - `...`: You can use more `=` to create deeper levels of headings. The template won't style them for you.
 
 For the appendix, it's almost the same as the body. But their heading numbering is `"A.1"`.
 
 == Usage of Some Functions
-In this section, I will show you how to use some functions, mainly tool functions, as well as some page functions.
+In this chapter, I will show you how to use some functions, mainly tool functions, as well as some page functions.
 === Side Note
 Two types of notes are provided in the template:
 - `side-note`: The `side-note` will create a side note with numbering#side-note[Like this]. Its numbering will be reset for each page.
@@ -206,7 +204,7 @@ Two types of notes are provided in the template:
 For both types of notes, you can use the `dy` parameter to specify the vertical position of the note. The default value is `0em`, which means the note will be placed at the same vertical position as the main text. You can use a negative value to move the note up, or a positive value to move it down.
 
 === Side Figure
-The `side-figure` will create a side figure with a caption. You can use it to create a figure with a caption on the side of the page. The caption will be numbered according to the section or chapter.
+The `side-figure` will create a side figure with a caption. You can use it to create a figure with a caption on the side of the page. The caption will be numbered according to the chapter.
 
 Here is an example of how to use the `side-figure`:
 ```typ
@@ -347,7 +345,7 @@ It's completely#side-note[The theorem body simply disappears.] incompatible with
 === great-theorems
 It's completely incompatible with this template. It causes conflicts with the heading numbering#side-note[Actually the conflicting part is inside `rich-counters`, so that may be another incompatible package.] styles.
 
-#section[Appendix]
+#part[Appendix]
 
 #show: appendix-style
 

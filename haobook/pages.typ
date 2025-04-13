@@ -1,5 +1,5 @@
 #import "styles.typ": *
-#import "tools.typ": label-section
+#import "tools.typ": label-part
 
 #let normal-page(body, book: false) = {
   set page(margin: (y: 2.5cm, outside: 2.5cm, inside: 2.5cm)) if book
@@ -47,7 +47,7 @@
 #let contents = {
   show: front-matter-style
   show: contents-style
-  outline(target: selector(heading).or(label-section), depth: 3)
+  outline(target: selector(heading).or(label-part), depth: 3)
 }
 
 #let bib(bib) = {
