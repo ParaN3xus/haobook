@@ -66,15 +66,26 @@
 #let side-note(body, dy: 0em) = {
   side-note-counter.step()
 
-  context super(side-note-counter.display())
-  note(
-    dy: dy,
-    numbered: false,
-    {
-      context side-note-counter.display("1:") + h(0.3em)
-      body
-    },
-  )
+  context {
+    let in-text-loc = here()
+
+    context super(side-note-counter.display())
+    note(
+      dy: dy,
+      numbered: false,
+      {
+        show link: set text(black)
+        show underline: it => it.body
+
+        link(
+          in-text-loc,
+          context side-note-counter.display("1:"),
+        )
+        h(0.3em)
+        body
+      },
+    )
+  }
 }
 
 #let margin-note(
