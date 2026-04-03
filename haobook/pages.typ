@@ -50,8 +50,8 @@
   outline(target: selector(heading).or(label-part), depth: 3)
 }
 
-#let bib(bib) = {
+#let bib(bib, ..args) = {
   heading(level: 1, [Bibliography])
-  bibliography(bytes(bib), title: none)
+  bibliography(bytes(bib), title: none, ..args)
   pagebreak(weak: true)
 }
