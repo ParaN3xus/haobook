@@ -74,13 +74,15 @@
       dy: dy,
       numbered: false,
       {
-        show link: set text(black)
-        show underline: it => it.body
+        {
+          show link: set text(black)
+          show underline: it => it.body
 
-        link(
-          in-text-loc,
-          context side-note-counter.display("1:"),
-        )
+          link(
+            in-text-loc,
+            context side-note-counter.display("1:"),
+          )
+        }
         h(0.3em)
         body
       },
