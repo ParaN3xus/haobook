@@ -153,6 +153,9 @@
   // if is bib
   if x.element == none {
     x
+    // add a zero width joiner between the reference and the margin note to avoid line breaks
+    // (e.g., between a reference and a period)
+    sym.zwj
     margin-note(
       cite(
         x.target,
